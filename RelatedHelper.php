@@ -12,7 +12,7 @@
  */
 namespace Psi\News4ward;
 
-class RelatedHelper extends \Controller 
+class RelatedHelper extends \Controller
 {
 
 	public function __construct()
@@ -38,7 +38,7 @@ class RelatedHelper extends \Controller
 		$arrAllModules = scan(TL_ROOT . '/system/modules');
 
 		// remove DROP statment for tl_news4ward_articleWithTags if news4ward_tags is installed
-		if(is_array($arrData['DROP']))
+		if(isset($arrData['DROP']) && is_array($arrData['DROP']))
 		{
 			foreach($arrData['DROP'] as $k => $v)
 			{
@@ -60,8 +60,8 @@ class RelatedHelper extends \Controller
 		// if news4ward_tags is installed tell contao to CREATE VIEW if not already done
 		if(in_array('news4ward_tags',$arrAllModules) && !$this->Database->tableExists('tl_news4ward_articleWithTags'))
 		{
-			$arrData['CREATE'][] = $this->viewCreateQry;
-		}
+            $arrData['CREATE'][md5($this->viewCreateQry)] = $this->viewCreateQry;
+        }
 
 		return $arrData;
 	}
@@ -82,5 +82,3 @@ class RelatedHelper extends \Controller
 		}
 	}
 }
-
-?>
